@@ -2,15 +2,16 @@ package com.n26.transactions.add.infrastructure.test;
 
 import arrow.core.Either;
 import com.n26.transactions.TransactionService;
+import com.n26.transactions.add.domain.AddTransaction;
 import com.n26.transactions.add.infrastructure.AddTransactionObjectMother;
 import com.n26.transactions.add.infrastructure.TransactionController;
 import com.n26.transactions.add.infrastructure.TransactionError;
 import com.n26.transactions.add.infrastructure.TransactionSuccess;
-import com.n26.transactions.add.domain.AddTransaction;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import static arrow.core.Either.Companion;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +28,7 @@ public class AddTransactionUnitTest {
         TransactionService service = serviceResponding(Companion.right(new TransactionSuccess()));
         TransactionController controller = new TransactionController(service);
 
-        controller.addTransaction(REQUEST);
+        addTransaction(controller);
 
         verify(service).addTransaction(REQUEST);
     }
@@ -35,10 +36,9 @@ public class AddTransactionUnitTest {
     @Test
     public void a_valid_response_is_mapped() {
         TransactionController controller = controllerUsing(Companion.right(new TransactionSuccess()));
+        final ResponseEntity<?> responseEntity = addTransaction(controller);
 
-        final ResponseEntity<?> responseEntity = controller.addTransaction(REQUEST);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }
 
@@ -46,7 +46,7 @@ public class AddTransactionUnitTest {
     public void statistic_is_too_old_response_is_mapped() {
         TransactionController controller = controllerUsing(Companion.left(new TransactionError.TransactionIsTooOld()));
 
-        final ResponseEntity<?> responseEntity = controller.addTransaction(REQUEST);
+        final ResponseEntity<?> responseEntity = addTransaction(controller);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
         assertThat(responseEntity.getBody()).isEqualTo(null);
@@ -56,10 +56,22 @@ public class AddTransactionUnitTest {
     public void statistic_date_in_the_future_response_is_mapped() {
         TransactionController controller = controllerUsing(Companion.left(new TransactionError.TransactionDateInTheFuture()));
 
-        final ResponseEntity<?> responseEntity = controller.addTransaction(REQUEST);
+        final ResponseEntity<?> responseEntity = addTransaction(controller);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
         assertThat(responseEntity.getBody()).isEqualTo(null);
+    }
+
+    @NotNull
+    private ResponseEntity<?> addTransaction(TransactionController controller) {
+        return controller.addTransaction(REQUEST, noBindingErrors());
+    }
+
+    @NotNull
+    private BindingResult noBindingErrors() {
+        final BindingResult mock = mock(BindingResult.class);
+        when(mock.hasErrors()).thenReturn(false);
+        return mock;
     }
 
     @NotNull

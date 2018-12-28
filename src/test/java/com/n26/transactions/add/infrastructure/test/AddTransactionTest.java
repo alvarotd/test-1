@@ -50,14 +50,12 @@ public class AddTransactionTest {
     }
 
     @Test
-    @Ignore("Current feature")
     public void adding_a_transaction_with_invalid_json() throws IOException {
         final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), "");
 
         final Response response = POST(baseUrl("/transactions"), requestBody);
 
         assertThat(response.code()).isEqualTo(NOT_ACCEPTABLE.value());
-        assertThat(response.body().string()).isEqualTo(null);
     }
 
     @Test
@@ -71,7 +69,6 @@ public class AddTransactionTest {
         final Response response = POST(baseUrl("/transactions"), requestBody);
 
         assertThat(response.code()).isEqualTo(422);
-        assertThat(response.body().string()).isEqualTo(null);
     }
 
     private String baseUrl(String suffix) {
