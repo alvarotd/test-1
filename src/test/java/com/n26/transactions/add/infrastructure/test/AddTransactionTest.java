@@ -3,7 +3,6 @@ package com.n26.transactions.add.infrastructure.test;
 import com.n26.Application;
 import com.n26.transactions.add.infrastructure.DateUtils;
 import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
-import com.n26.transactions.add.infrastructure.delivery.AddTransactionDomain;
 import okhttp3.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class AddTransactionTest {
     @Test
     public void adding_a_valid_transaction() throws IOException {
         final LocalDateTime dateTime = DateUtils.parseDate("2018-07-17T09:59:51.312Z");
-        final String content = JSONUtils.toJSON(AddTransaction.from(new AddTransactionDomain(new BigDecimal("12.3343"), dateTime)));
+        final String content = JSONUtils.toJSON(new AddTransaction(new BigDecimal("12.3343"), dateTime));
         final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), content);
 
         final Response response = POST(baseUrl("/transactions"), requestBody);

@@ -20,7 +20,7 @@ public class TransactionServiceTest {
     @Test
     public void a_valid_transaction(){
 
-        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(new AddTransaction("1", "2"));
+        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(AddTransactionObjectMother.valid());
 
         assertThat(result.isRight()).isTrue();
     }
