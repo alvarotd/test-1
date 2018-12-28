@@ -1,10 +1,9 @@
 package com.n26.transactions
 
 import arrow.core.Either
-import arrow.core.right
 import com.n26.transactions.add.infrastructure.TransactionError
 import com.n26.transactions.add.infrastructure.TransactionSuccess
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction
+import com.n26.transactions.add.domain.AddTransaction
 import org.springframework.stereotype.Service
 
 @Service

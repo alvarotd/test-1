@@ -2,7 +2,7 @@ package com.n26.transactions.add.infrastructure.test;
 
 import com.n26.Application;
 import com.n26.transactions.add.infrastructure.DateUtils;
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
+import com.n26.transactions.add.domain.AddTransaction;
 import okhttp3.*;
 import org.junit.Ignore;
 import org.junit.Test;

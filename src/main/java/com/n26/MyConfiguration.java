@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.n26.transactions.add.infrastructure.AddTransactionDeserializer;
 import com.n26.transactions.add.infrastructure.AddTransactionSerializer;
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
+import com.n26.transactions.add.domain.AddTransaction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

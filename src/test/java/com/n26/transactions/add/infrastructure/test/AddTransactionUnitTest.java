@@ -6,7 +6,7 @@ import com.n26.transactions.add.infrastructure.AddTransactionObjectMother;
 import com.n26.transactions.add.infrastructure.TransactionController;
 import com.n26.transactions.add.infrastructure.TransactionError;
 import com.n26.transactions.add.infrastructure.TransactionSuccess;
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
+import com.n26.transactions.add.domain.AddTransaction;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;

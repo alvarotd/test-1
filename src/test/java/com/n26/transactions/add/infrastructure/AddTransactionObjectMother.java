@@ -1,6 +1,6 @@
 package com.n26.transactions.add.infrastructure;
 
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
+import com.n26.transactions.add.domain.AddTransaction;
 
 import java.math.BigDecimal;
 

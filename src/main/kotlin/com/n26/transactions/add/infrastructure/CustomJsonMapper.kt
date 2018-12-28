@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.node.TextNode
-import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction
-import java.lang.RuntimeException
+import com.n26.transactions.add.domain.AddTransaction
 import java.math.BigDecimal
 import com.fasterxml.jackson.core.JsonProcessingException
 import java.io.IOException

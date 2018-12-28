@@ -1,4 +1,4 @@
-package com.n26.transactions.add.infrastructure.delivery
+package com.n26.transactions.add.domain
 
 import java.math.BigDecimal
 import java.time.LocalDateTime

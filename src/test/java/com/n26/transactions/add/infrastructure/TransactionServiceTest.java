@@ -2,7 +2,6 @@ package com.n26.transactions.add.infrastructure;
 
 import arrow.core.Either;
 import com.n26.transactions.TransactionService;
-import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
 import org.junit.Before;
 import org.junit.Test;
 
