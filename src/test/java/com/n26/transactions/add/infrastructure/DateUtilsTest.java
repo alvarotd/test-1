@@ -11,8 +11,11 @@ public class DateUtilsTest {
 
     @Test
     public void parseDate(){
-        final LocalDateTime actual = DateUtils.parseDate("2018-07-17T09:59:51.312Z");
-        assertThat(actual).isEqualTo(DateUtils.parseDate(DateUtils.formatted(actual)));
+        final LocalDateTime original = DateUtils.parseDate("2018-07-17T09:59:51.312Z");
+
+        final LocalDateTime reversed = DateUtils.parseDate(DateUtils.formatted(original));
+
+        assertThat(original).isEqualTo(reversed);
     }
 
 }
