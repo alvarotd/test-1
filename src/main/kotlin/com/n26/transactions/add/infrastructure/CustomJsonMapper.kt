@@ -18,7 +18,6 @@ class AddTransactionDeserializer @JvmOverloads constructor(vc: Class<*>? = null)
 
     @Throws(IllegalArgumentException::class)
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): AddTransaction {
-//        throw RuntimeException("e")
         try {
             val node = jp.codec.readTree<TreeNode>(jp)
             return AddTransaction(readAmount(node), readTimestamp(node))
