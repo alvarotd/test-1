@@ -1,24 +1,19 @@
 package com.n26.transactions.add.infrastructure
 
 import arrow.core.Either
-import arrow.core.left
 import com.n26.transactions.TransactionService
 import com.n26.transactions.add.domain.AddTransaction
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
-import org.springframework.ui.Model
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
-import java.io.IOException
 
 @RestController("/transactions")
 class TransactionController(private val service: TransactionService) {
 
     @PostMapping()
-    fun addTransaction(@Valid @RequestBody request: AddTransaction, bindingResult: BindingResult): ResponseEntity<*> {
-
+    fun addTransaction(@Valid @RequestBody request: AddTransaction): ResponseEntity<*> {
         val map = service.addTransaction(request)
                 .map {
                     ResponseEntity.status(HttpStatus.CREATED).build<String>()

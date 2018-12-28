@@ -64,7 +64,7 @@ public class AddTransactionUnitTest {
 
     @NotNull
     private ResponseEntity<?> addTransaction(TransactionController controller) {
-        return controller.addTransaction(REQUEST, noBindingErrors());
+        return controller.addTransaction(REQUEST);
     }
 
     @NotNull
