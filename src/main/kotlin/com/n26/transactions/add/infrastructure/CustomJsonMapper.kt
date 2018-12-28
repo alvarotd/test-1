@@ -10,11 +10,12 @@ import com.fasterxml.jackson.databind.node.TextNode
 import com.n26.transactions.add.domain.AddTransaction
 import java.math.BigDecimal
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonDeserializer
 import java.io.IOException
 import com.fasterxml.jackson.databind.JsonSerializer
 
 
-class AddTransactionDeserializer @JvmOverloads constructor(vc: Class<*>? = null) : StdDeserializer<AddTransaction>(vc) {
+class AddTransactionDeserializer : JsonDeserializer<AddTransaction>() {
 
     @Throws(IllegalArgumentException::class)
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): AddTransaction {
