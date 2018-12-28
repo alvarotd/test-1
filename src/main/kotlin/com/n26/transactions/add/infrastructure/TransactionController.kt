@@ -5,12 +5,18 @@ import com.n26.transactions.TransactionService
 import com.n26.transactions.add.infrastructure.delivery.AddTransaction
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
+@RestController("/transactions")
 class TransactionController(private val service: TransactionService) {
-    fun addTransaction(request: AddTransaction): ResponseEntity<*> {
+
+    @PostMapping()
+    fun addTransaction(@RequestBody request: AddTransaction): ResponseEntity<*> {
         val map = service.addTransaction(request)
                 .map {
-                    ResponseEntity.ok().build<String>()
+                    ResponseEntity.status(HttpStatus.CREATED).build<String>()
                 }.mapLeft {
                     mapper(it)
                 }

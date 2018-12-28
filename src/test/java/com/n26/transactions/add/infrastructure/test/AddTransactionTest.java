@@ -1,6 +1,9 @@
 package com.n26.transactions.add.infrastructure.test;
 
+import com.n26.Application;
+import com.n26.transactions.add.infrastructure.DateUtils;
 import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
+import com.n26.transactions.add.infrastructure.delivery.AddTransactionDomain;
 import okhttp3.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,7 +19,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = Application.class)
 @RunWith(SpringRunner.class)
 public class AddTransactionTest {
 
@@ -36,10 +39,10 @@ public class AddTransactionTest {
     }
 
     @Test
-    @Ignore("Current feature")
     public void adding_a_valid_transaction() throws IOException {
         final LocalDateTime dateTime = DateUtils.parseDate("2018-07-17T09:59:51.312Z");
-        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), JSONUtils.toJSON(new AddTransaction(new BigDecimal("12.3343"), dateTime)));
+        final String content = JSONUtils.toJSON(AddTransaction.from(new AddTransactionDomain(new BigDecimal("12.3343"), dateTime)));
+        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), content);
 
         final Response response = POST(baseUrl("/transactions"), requestBody);
 

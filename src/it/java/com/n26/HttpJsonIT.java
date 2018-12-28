@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -64,7 +65,8 @@ public class HttpJsonIT {
 
     private static final String TIMESTAMP_OFFSET_PROPERTY = "_timestampOffset";
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper OBJECT_MAPPER;
 
     private static final MediaType CONTENT_TYPE_JSON = MediaType.APPLICATION_JSON_UTF8;
 
