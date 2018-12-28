@@ -59,7 +59,6 @@ public class AddTransactionTest {
     }
 
     @Test
-    @Ignore("Current feature")
     public void adding_a_transaction_with_invalid_json_because_not_parseable() throws IOException {
         final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), "{\n" +
                 "  \"amount\": \"12.3343\",\n" +

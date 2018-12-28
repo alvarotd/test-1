@@ -18,6 +18,7 @@ class TransactionController(private val service: TransactionService) {
 
     @PostMapping()
     fun addTransaction(@Valid @RequestBody request: AddTransaction, bindingResult: BindingResult): ResponseEntity<*> {
+
         val map = service.addTransaction(request)
                 .map {
                     ResponseEntity.status(HttpStatus.CREATED).build<String>()
@@ -41,6 +42,11 @@ class TransactionController(private val service: TransactionService) {
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun cannotParseMessage(e: Exception): ResponseEntity<*> {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build<Void>()
+    }
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun cannotParseAField(e: Exception): ResponseEntity<*> {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
     }
 }
 
