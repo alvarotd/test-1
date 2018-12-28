@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
@@ -44,6 +45,31 @@ public class AddTransactionTest {
 
         assertThat(response.code()).isEqualTo(201);
         assertThat(response.body().string()).isEqualTo("");
+    }
+
+    @Test
+    @Ignore("Current feature")
+    public void adding_a_transaction_with_invalid_json() throws IOException {
+        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), "");
+
+        final Response response = POST(baseUrl("/transactions"), requestBody);
+
+        assertThat(response.code()).isEqualTo(NOT_ACCEPTABLE.value());
+        assertThat(response.body().string()).isEqualTo(null);
+    }
+
+    @Test
+    @Ignore("Current feature")
+    public void adding_a_transaction_with_invalid_json_because_not_parseable() throws IOException {
+        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), "{\n" +
+                "  \"amount\": \"12.3343\",\n" +
+                "  \"timestamp\": \"2018-07-17T09:59.312Z\"\n" +
+                "}");
+
+        final Response response = POST(baseUrl("/transactions"), requestBody);
+
+        assertThat(response.code()).isEqualTo(422);
+        assertThat(response.body().string()).isEqualTo(null);
     }
 
     private String baseUrl(String suffix) {

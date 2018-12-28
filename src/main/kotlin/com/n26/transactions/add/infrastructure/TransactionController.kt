@@ -3,22 +3,37 @@ package com.n26.transactions.add.infrastructure
 import arrow.core.Either
 import com.n26.transactions.TransactionService
 import com.n26.transactions.add.infrastructure.delivery.AddTransaction
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
 class TransactionController(private val service: TransactionService) {
     fun addTransaction(request: AddTransaction): ResponseEntity<*> {
-        val map = service.addTransaction(request).map {
-            ResponseEntity.ok().build<String>()
-        }.mapLeft {
-            ResponseEntity.ok().build<String>()
-        }
-        return x(map)
+        val map = service.addTransaction(request)
+                .map {
+                    ResponseEntity.ok().build<String>()
+                }.mapLeft {
+                    mapper(it)
+                }
+        return extractResult(map)
     }
 
-    private fun <T> x(map: Either<T, T>): T {
+    private fun mapper(error: TransactionError): ResponseEntity<*> {
+        return TransactionStatusCodes.map(error)
+    }
+
+    private fun <T> extractResult(map: Either<T, T>): T {
         return when (map) {
             is Either.Left -> map.a
             is Either.Right -> map.b
+        }
+    }
+}
+
+object TransactionStatusCodes {
+    fun map(error: TransactionError): ResponseEntity<*> {
+        return when (error) {
+            is TransactionError.TransactionDateInTheFuture -> ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
+            is TransactionError.TransactionIsTooOld -> ResponseEntity.status(HttpStatus.NO_CONTENT).build<Void>()
         }
     }
 }
@@ -27,6 +42,7 @@ class TransactionSuccess {
 
 }
 
-class TransactionError {
-
+sealed class TransactionError {
+    class TransactionIsTooOld() : TransactionError()
+    class TransactionDateInTheFuture() : TransactionError()
 }
