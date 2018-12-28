@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.n26.transactions.add.infrastructure.delivery.AddTransaction;
 import okhttp3.*;
 import org.jetbrains.annotations.Nullable;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +43,7 @@ public class AddTransactionTest {
     }
 
     @Test
+    @Ignore("Current feature")
     public void adding_a_valid_transaction() throws IOException {
         final LocalDateTime dateTime = parseDate("2018-07-17T09:59:51.312Z");
         final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), toJSON(new AddTransaction(new BigDecimal("12.3343"), dateTime)));
