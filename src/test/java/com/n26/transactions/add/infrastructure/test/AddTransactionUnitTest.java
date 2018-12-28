@@ -6,6 +6,8 @@ import com.n26.transactions.add.domain.AddTransaction;
 import com.n26.transactions.add.infrastructure.AddTransactionObjectMother;
 import com.n26.transactions.add.infrastructure.TransactionController;
 import com.n26.transactions.add.infrastructure.TransactionError;
+import com.n26.transactions.add.infrastructure.TransactionError.TransactionDateInTheFuture;
+import com.n26.transactions.add.infrastructure.TransactionError.TransactionIsTooOld;
 import com.n26.transactions.add.infrastructure.TransactionSuccess;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class AddTransactionUnitTest {
 
     @Test
     public void statistic_is_too_old_response_is_mapped() {
-        TransactionController controller = controllerUsing(Companion.left(new TransactionError.TransactionIsTooOld()));
+        TransactionController controller = controllerUsing(Companion.left(TransactionIsTooOld.INSTANCE));
 
         final ResponseEntity<?> responseEntity = addTransaction(controller);
 
@@ -54,7 +56,7 @@ public class AddTransactionUnitTest {
 
     @Test
     public void statistic_date_in_the_future_response_is_mapped() {
-        TransactionController controller = controllerUsing(Companion.left(new TransactionError.TransactionDateInTheFuture()));
+        TransactionController controller = controllerUsing(Companion.left(TransactionDateInTheFuture.INSTANCE));
 
         final ResponseEntity<?> responseEntity = addTransaction(controller);
 

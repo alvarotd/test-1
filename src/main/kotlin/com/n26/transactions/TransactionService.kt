@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 open class TransactionService {
     open fun addTransaction(request: AddTransaction): Either<TransactionError, TransactionSuccess> {
+        if(request.expired()){
+            return Either.left(TransactionError.TransactionIsTooOld)
+        } else if(request.isInTheFuture()){
+            return Either.left(TransactionError.TransactionDateInTheFuture)
+        }
         return Either.right(TransactionSuccess())
     }
 }

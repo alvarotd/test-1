@@ -59,6 +59,6 @@ class TransactionSuccess {
 }
 
 sealed class TransactionError {
-    class TransactionIsTooOld() : TransactionError()
-    class TransactionDateInTheFuture() : TransactionError()
+    object TransactionIsTooOld : TransactionError()
+    object TransactionDateInTheFuture : TransactionError()
 }
