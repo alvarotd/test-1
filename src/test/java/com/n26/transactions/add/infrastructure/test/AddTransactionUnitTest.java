@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 
+import static arrow.core.Either.Companion;
 import static com.n26.transactions.add.infrastructure.test.DateUtils.parseDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +25,7 @@ public class AddTransactionUnitTest {
 
     @Test
     public void delegate_the_call_to_the_service() {
-        TransactionService service = serviceResponding();
+        TransactionService service = serviceResponding(Companion.right(new TransactionSuccess()));
         TransactionController controller = new TransactionController(service);
 
         controller.addTransaction(REQUEST);
@@ -34,8 +35,7 @@ public class AddTransactionUnitTest {
 
     @Test
     public void a_valid_response_is_mapped() {
-        TransactionService service = serviceResponding();
-        TransactionController controller = new TransactionController(service);
+        TransactionController controller = controllerUsing(Companion.right(new TransactionSuccess()));
 
         final ResponseEntity<?> responseEntity = controller.addTransaction(REQUEST);
 
@@ -44,9 +44,15 @@ public class AddTransactionUnitTest {
     }
 
     @NotNull
-    private TransactionService serviceResponding() {
+    private TransactionController controllerUsing(Either serviceResult) {
+        TransactionService service = serviceResponding(serviceResult);
+        return new TransactionController(service);
+    }
+
+    @NotNull
+    private TransactionService serviceResponding(Either result) {
         TransactionService service = mock(TransactionService.class);
-        when(service.addTransaction(any())).thenReturn(Either.Companion.right(new TransactionSuccess()));
+        when(service.addTransaction(any())).thenReturn(result);
         return service;
     }
 }
