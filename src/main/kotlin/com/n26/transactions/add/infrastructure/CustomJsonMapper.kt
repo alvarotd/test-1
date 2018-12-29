@@ -18,13 +18,19 @@ import com.n26.transactions.statistics.domain.Statistics
 
 class AddTransactionDeserializer : JsonDeserializer<AddTransaction>() {
 
-    @Throws(IllegalArgumentException::class)
+    @Throws(IllegalArgumentException::class, IllegalFieldValueException::class)
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): AddTransaction {
+        val node: TreeNode?
         try {
-            val node = jp.codec.readTree<TreeNode>(jp)
-            return AddTransaction(readAmount(node), readTimestamp(node))
+            node = jp.codec.readTree(jp)
         } catch (e: Exception) {
             throw IllegalArgumentException("Could not parse this AddTransaction", e)
+        }
+
+        try {
+            return AddTransaction(readAmount(node), readTimestamp(node))
+        } catch (e: Exception) {
+            throw IllegalFieldValueException("", e)
         }
     }
 
@@ -49,9 +55,9 @@ class StatisticsDeserializer : JsonDeserializer<Statistics>() {
 
     private fun readValues(node: TreeNode): Statistics {
         val result = mutableListOf<Pair<String, String>>()
-        var count : Int? = 0
+        var count: Int? = 0
         for (fieldName in node.fieldNames()) {
-            if(fieldName == "count"){
+            if (fieldName == "count") {
                 count = (node.get(fieldName) as IntNode).asInt()
             } else {
                 result.add(Pair(fieldName, string(node, fieldName)))

@@ -2,25 +2,35 @@ package com.n26.transactions.add.infrastructure
 
 import arrow.core.Either
 import com.n26.transactions.TransactionService
-import com.n26.transactions.add.domain.AddTransaction
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 @RestController("/transactions")
-class TransactionController(private val service: TransactionService) {
+class TransactionController(private val service: TransactionService, private val objectMapper: TransactionsObjectMapper) {
 
     @PostMapping()
-    fun addTransaction(@Valid @RequestBody request: AddTransaction): ResponseEntity<*> {
-        val map = service.addTransaction(request)
-                .map {
-                    ResponseEntity.status(HttpStatus.CREATED).build<String>()
-                }.mapLeft {
-                    mapper(it)
+    fun addTransaction(@RequestBody requestRaw: String): ResponseEntity<*> {
+        val tryParsing = objectMapper.tryParsing(requestRaw)
+        if (tryParsing.isLeft()) {
+            return (tryParsing as Either.Left).a
+        }
+        val toDomain = (tryParsing as Either.Right).b.toDomain()
+        val result = toDomain
+                .map { request ->
+                    try {
+                        val map = service.addTransaction(request)
+                                .map {
+                                    ResponseEntity.status(HttpStatus.CREATED).build<String>()
+                                }.mapLeft {
+                                    mapper(it)
+                                }
+                        extractResult(map)
+                    } catch (e: IllegalArgumentException) {
+                        ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
+                    }
                 }
-        return extractResult(map)
+        return extractResult(result)
     }
 
     private fun mapper(error: TransactionError): ResponseEntity<*> {
@@ -34,18 +44,18 @@ class TransactionController(private val service: TransactionService) {
         }
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun cannotParseMessage(e: Exception): ResponseEntity<*> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build<Void>()
-    }
-
-    @ExceptionHandler(IllegalArgumentException::class)
-    fun cannotParseAField(e: Exception): ResponseEntity<*> {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
-    }
+//    @ExceptionHandler(HttpMessageNotReadableException::class)
+//    fun cannotParseMessage(e: Exception): ResponseEntity<*> {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build<Void>()
+//    }
+//
+//    @ExceptionHandler(IllegalArgumentException::class)
+//    fun cannotParseAField(e: Exception): ResponseEntity<*> {
+//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
+//    }
 
     @DeleteMapping()
-    fun deleteAllTransactions() : ResponseEntity<*>{
+    fun deleteAllTransactions(): ResponseEntity<*> {
         service.deleteAllTransactions()
         return ResponseEntity.noContent().build<Void>()
     }
