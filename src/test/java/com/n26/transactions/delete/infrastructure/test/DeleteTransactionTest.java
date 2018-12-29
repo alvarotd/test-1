@@ -24,6 +24,14 @@ public class DeleteTransactionTest {
 
     OkHttpClient client = new OkHttpClient();
 
+    @Test
+    public void adding_a_valid_transaction() throws IOException {
+
+        final Response response = DELETE(baseUrl("/transactions"));
+
+        assertThat(response.code()).isEqualTo(204);
+    }
+
     private Response DELETE(String url) throws IOException {
         Request request = new Request.Builder()
                 .delete()
@@ -32,14 +40,6 @@ public class DeleteTransactionTest {
 
         Response response = client.newCall(request).execute();
         return response;
-    }
-
-    @Test
-    public void adding_a_valid_transaction() throws IOException {
-
-        final Response response = DELETE(baseUrl("/transactions"));
-
-        assertThat(response.code()).isEqualTo(204);
     }
 
     private String baseUrl(String suffix) {
