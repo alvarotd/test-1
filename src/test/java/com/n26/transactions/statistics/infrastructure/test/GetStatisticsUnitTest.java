@@ -43,13 +43,4 @@ public class GetStatisticsUnitTest {
     private StatisticsController controller(TransactionService service) {
         return new StatisticsController(service);
     }
-
-    @NotNull
-    private List<Pair<String, String>> allZeroes() {
-        return Arrays.asList(
-                new Pair<>("sum", "0.00"),
-                new Pair<>("avg", "0.00"),
-                new Pair<>("max", "0.00"),
-                new Pair<>("min", "0.00"));
-    }
 }

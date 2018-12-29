@@ -36,7 +36,7 @@ class TransactionController(private val service: TransactionService) {
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun cannotParseMessage(e: Exception): ResponseEntity<*> {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build<Void>()
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build<Void>()
     }
 
     @ExceptionHandler(IllegalArgumentException::class)

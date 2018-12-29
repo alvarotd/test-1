@@ -20,7 +20,7 @@ open class TransactionService(private val transactionRepository: TransactionRepo
     }
 
     open fun getStatistics(): Statistics {
-        TODO()
+        return transactionRepository.statisticsOfLast60Seconds()
     }
 
     open fun deleteAllTransactions() {

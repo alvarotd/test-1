@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static com.n26.transactions.add.infrastructure.AddTransactionObjectMother.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +40,7 @@ public class TransactionServiceTest {
     @Test
     public void a_valid_transaction_almost_expired() {
 
-        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(aged(LocalDateTime.now().minusSeconds(59)));
+        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(aged(ZonedDateTime.now().minusSeconds(59)));
 
         assertThat(result.isRight()).isTrue();
     }

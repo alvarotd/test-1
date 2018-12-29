@@ -6,6 +6,9 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.n26.transactions.add.infrastructure.AddTransactionDeserializer;
 import com.n26.transactions.add.infrastructure.AddTransactionSerializer;
 import com.n26.transactions.add.domain.AddTransaction;
+import com.n26.transactions.add.infrastructure.StatisticsDeserializer;
+import com.n26.transactions.add.infrastructure.StatisticsSerializer;
+import com.n26.transactions.statistics.domain.Statistics;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,11 +17,16 @@ public class MyConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addDeserializer(AddTransaction.class, new AddTransactionDeserializer());
-        simpleModule.addSerializer(AddTransaction.class, new AddTransactionSerializer());
+        SimpleModule transactionModule = new SimpleModule();
+        transactionModule.addDeserializer(AddTransaction.class, new AddTransactionDeserializer());
+        transactionModule.addSerializer(AddTransaction.class, new AddTransactionSerializer());
+
+        SimpleModule statisticsModule = new SimpleModule();
+        statisticsModule.addSerializer(Statistics.class, new StatisticsSerializer());
+        statisticsModule.addDeserializer(Statistics.class, new StatisticsDeserializer());
         return new ObjectMapper()
-                .registerModule(simpleModule)
+                .registerModule(transactionModule)
+                .registerModule(statisticsModule)
                 .registerModule(new KotlinModule())
                 ;
     }

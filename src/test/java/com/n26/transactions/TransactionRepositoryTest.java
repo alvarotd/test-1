@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
+import static com.n26.transactions.add.infrastructure.AddTransactionObjectMother.tooOld;
 import static com.n26.transactions.add.infrastructure.AddTransactionObjectMother.valid;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,13 +24,15 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    public void adds_all_the_transactions() {
+    public void adds_all_the_valid_transactions() {
 
+        transactionRepository.addTransaction(tooOld());
         transactionRepository.addTransaction(valid());
         transactionRepository.addTransaction(valid());
 
         assertThat(transactionRepository.statisticsOfLast60Seconds().count()).isEqualTo(2);
     }
+
 
     @Test
     public void sums_the_transactions() {
@@ -49,10 +53,44 @@ public class TransactionRepositoryTest {
     }
 
     @Test
+    public void averages_the_transactions_using_correct_division() {
+
+        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("2"), ZonedDateTime.now()));
+        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("0"), ZonedDateTime.now()));
+        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("0"), ZonedDateTime.now()));
+
+        assertThat(get("avg")).isEqualTo(value("0.67"));
+    }
+
+    @Test
+    public void default_average_value_is_zero() {
+
+        //do not add any transactions
+
+        assertThat(get("avg")).isEqualTo(value("0.00"));
+    }
+
+    @Test
+    public void default_max_value_is_zero() {
+
+        //do not add any transactions
+
+        assertThat(get("max")).isEqualTo(value("0.00"));
+    }
+
+    @Test
+    public void default_min_value_is_zero() {
+
+        //do not add any transactions
+
+        assertThat(get("min")).isEqualTo(value("0.00"));
+    }
+
+    @Test
     public void max_the_transactions() {
 
         transactionRepository.addTransaction(valid());
-        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("13"), LocalDateTime.now()));
+        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("13"), ZonedDateTime.now()));
 
         assertThat(get("max")).isEqualTo(value("13.00"));
     }
@@ -61,7 +99,7 @@ public class TransactionRepositoryTest {
     public void min_the_transactions() {
 
         transactionRepository.addTransaction(valid());
-        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("13"), LocalDateTime.now()));
+        transactionRepository.addTransaction(new AddTransaction(new BigDecimal("13"), ZonedDateTime.now()));
 
         assertThat(get("min")).isEqualTo(value("12.33"));
     }

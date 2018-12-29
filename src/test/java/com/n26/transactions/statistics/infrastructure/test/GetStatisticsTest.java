@@ -3,11 +3,10 @@ package com.n26.transactions.statistics.infrastructure.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.n26.Application;
 import com.n26.transactions.statistics.domain.Statistics;
-import kotlin.Pair;
+import com.n26.transactions.statistics.domain.StatisticsObjectMother;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +16,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.n26.transactions.statistics.domain.Statistics.Companion;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,22 +33,12 @@ public class GetStatisticsTest {
     OkHttpClient client = new OkHttpClient();
 
     @Test
-    @Ignore("current feature")
     public void valid_request() throws IOException {
 
         final Response response = GET(baseUrl("/statistics"));
 
-        assertThat(response.code()).isEqualTo(204);
-        assertThat(parse(response)).isEqualTo(Companion.of(0, allZeroes()));
-    }
-
-    @NotNull
-    private List<Pair<String, String>> allZeroes() {
-        return Arrays.asList(
-                new Pair<>("sum", "0.00"),
-                new Pair<>("avg", "0.00"),
-                new Pair<>("max", "0.00"),
-                new Pair<>("min", "0.00"));
+        assertThat(response.code()).isEqualTo(200);
+        assertThat(parse(response)).isEqualTo(StatisticsObjectMother.allZeroes());
     }
 
     private Statistics parse(Response response) throws IOException {

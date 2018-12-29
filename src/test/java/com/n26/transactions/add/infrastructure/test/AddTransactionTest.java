@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = Application.class)
@@ -55,7 +56,16 @@ public class AddTransactionTest {
 
         final Response response = POST(baseUrl("/transactions"), requestBody);
 
-        assertThat(response.code()).isEqualTo(NOT_ACCEPTABLE.value());
+        assertThat(response.code()).isEqualTo(BAD_REQUEST.value());
+    }
+
+    @Test
+    public void adding_a_transaction_with_invalid_json_2() throws IOException {
+        final RequestBody requestBody = RequestBody.create(MediaType.get("application/json"), "Hello World!");
+
+        final Response response = POST(baseUrl("/transactions"), requestBody);
+
+        assertThat(response.code()).isEqualTo(BAD_REQUEST.value());
     }
 
     @Test
