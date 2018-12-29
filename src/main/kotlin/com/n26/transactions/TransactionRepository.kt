@@ -54,5 +54,9 @@ open class TransactionRepository {
     private fun BigDecimal.formatted(): String {
         return this.setScale(2, RoundingMode.HALF_UP).toString()  //TODO AGB set proper MathContext
     }
+
+    open fun deleteAllTransactions() {
+        this.values.clear()
+    }
 }
 

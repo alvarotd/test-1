@@ -24,6 +24,6 @@ open class TransactionService(private val transactionRepository: TransactionRepo
     }
 
     open fun deleteAllTransactions() {
-
+        transactionRepository.deleteAllTransactions()
     }
 }

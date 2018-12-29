@@ -59,4 +59,12 @@ public class TransactionServiceTest {
 
         assertThat(result).isEqualTo(Either.Companion.left(TransactionDateInTheFuture.INSTANCE));
     }
+
+    @Test
+    public void delegate_the_delete_transactions_call() {
+
+        transactionService.deleteAllTransactions();
+
+        verify(transactionRepository).deleteAllTransactions();
+    }
 }
