@@ -18,7 +18,7 @@ import com.n26.transactions.statistics.domain.Statistics
 
 class AddTransactionDeserializer : JsonDeserializer<AddTransaction>() {
 
-    @Throws(IllegalArgumentException::class, IllegalFieldValueException::class)
+    @Throws(IllegalArgumentException::class)
     override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): AddTransaction {
         val node: TreeNode?
         try {
