@@ -2,10 +2,7 @@ package com.n26.transactions.add.infrastructure.test;
 
 import com.n26.Application;
 import com.n26.transactions.add.infrastructure.AddTransactionObjectMother;
-import com.n26.transactions.add.infrastructure.DateUtils;
-import com.n26.transactions.add.domain.AddTransaction;
 import okhttp3.*;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,12 +10,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = Application.class)
 @RunWith(SpringRunner.class)
