@@ -64,6 +64,16 @@ public class AddTransactionUnitTest {
         assertThat(responseEntity.getBody()).isEqualTo(null);
     }
 
+    @Test
+    public void delete_delegate_the_call_to_the_service() {
+        TransactionService service = mock(TransactionService.class);
+        TransactionController controller = new TransactionController(service);
+
+        controller.deleteAllTransactions();
+
+        verify(service).deleteAllTransactions();
+    }
+
     @NotNull
     private ResponseEntity<?> addTransaction(TransactionController controller) {
         return controller.addTransaction(REQUEST);

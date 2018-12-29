@@ -22,4 +22,8 @@ open class TransactionService(private val transactionRepository: TransactionRepo
     open fun getStatistics(): Statistics {
         TODO()
     }
+
+    open fun deleteAllTransactions() {
+
+    }
 }

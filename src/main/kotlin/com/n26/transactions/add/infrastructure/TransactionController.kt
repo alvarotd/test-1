@@ -43,6 +43,12 @@ class TransactionController(private val service: TransactionService) {
     fun cannotParseAField(e: Exception): ResponseEntity<*> {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
     }
+
+    @DeleteMapping()
+    fun deleteAllTransactions() : ResponseEntity<*>{
+        service.deleteAllTransactions()
+        return ResponseEntity.noContent().build<Void>()
+    }
 }
 
 object TransactionStatusCodes {
