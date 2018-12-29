@@ -2,7 +2,6 @@ package com.n26.transactions.domain;
 
 import com.n26.transactions.statistics.domain.Statistics;
 import kotlin.Pair;
-import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +21,9 @@ public class TransactionRepository {
     }
 
     public Statistics statisticsOfLast60Seconds() {
-        final val validValues = values.stream().filter(it -> !it.expired()).collect(Collectors.toList());
+        final List<Transaction> validValues = values.stream().filter(it -> !it.expired()).collect(Collectors.toList());
         final int size = validValues.size();
-        val count = size;
+        int count = size;
         return Statistics.Companion.of(count,
                 pair("sum", sum(validValues, BigDecimal.ZERO)),
                 pair("avg", avgOrDefault(validValues, BigDecimal.ZERO)),
@@ -82,7 +81,7 @@ public class TransactionRepository {
         if (values.isEmpty()) {
             return formatted(defaultValue);
         } else {
-            final val amount = sumAsBigDecimal(values, defaultValue);
+            final BigDecimal amount = sumAsBigDecimal(values, defaultValue);
             BigDecimal total = new BigDecimal(values.size());
             return formatted(amount.divide(total, MathContext.DECIMAL128));
         }
