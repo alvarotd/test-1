@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.n26.transactions.add.infrastructure.TransactionError
 import com.n26.transactions.add.infrastructure.TransactionSuccess
 import com.n26.transactions.add.domain.AddTransaction
+import com.n26.transactions.statistics.domain.Statistics
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,5 +16,9 @@ open class TransactionService {
             return Either.left(TransactionError.TransactionDateInTheFuture)
         }
         return Either.right(TransactionSuccess())
+    }
+
+    open fun getStatistics(): Statistics {
+        TODO()
     }
 }

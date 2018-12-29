@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class GetStatisticsTest {
     OkHttpClient client = new OkHttpClient();
 
     @Test
+    @Ignore("current feature")
     public void valid_request() throws IOException {
 
         final Response response = GET(baseUrl("/statistics"));
