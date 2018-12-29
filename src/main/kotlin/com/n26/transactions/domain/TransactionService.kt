@@ -1,15 +1,14 @@
-package com.n26.transactions
+package com.n26.transactions.domain
 
 import arrow.core.Either
-import com.n26.transactions.add.infrastructure.TransactionError
-import com.n26.transactions.add.infrastructure.TransactionSuccess
-import com.n26.transactions.add.domain.AddTransaction
+import com.n26.transactions.add.infrastructure.delivery.TransactionError
+import com.n26.transactions.add.infrastructure.delivery.TransactionSuccess
 import com.n26.transactions.statistics.domain.Statistics
 import org.springframework.stereotype.Service
 
 @Service
 open class TransactionService(private val transactionRepository: TransactionRepository) {
-    open fun addTransaction(request: AddTransaction): Either<TransactionError, TransactionSuccess> {
+    open fun addTransaction(request: Transaction): Either<TransactionError, TransactionSuccess> {
         if(request.expired()){
             return Either.left(TransactionError.TransactionIsTooOld)
         } else if(request.isInTheFuture()){

@@ -2,13 +2,14 @@ package com.n26.transactions.add.infrastructure.test;
 
 import arrow.core.Either;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.n26.MyConfiguration;
-import com.n26.transactions.TransactionService;
-import com.n26.transactions.add.domain.AddTransaction;
+import com.n26.transactions.add.infrastructure.delivery.TransactionController;
+import com.n26.transactions.add.infrastructure.delivery.TransactionSuccess;
+import com.n26.transactions.domain.TransactionService;
+import com.n26.transactions.domain.Transaction;
 import com.n26.transactions.add.infrastructure.*;
-import com.n26.transactions.add.infrastructure.TransactionError.TransactionDateInTheFuture;
-import com.n26.transactions.add.infrastructure.TransactionError.TransactionIsTooOld;
+import com.n26.transactions.add.infrastructure.delivery.TransactionError.TransactionDateInTheFuture;
+import com.n26.transactions.add.infrastructure.delivery.TransactionError.TransactionIsTooOld;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AddTransactionUnitTest {
 
     public static final TransactionsObjectMapper objectMapper = new TransactionsObjectMapper(new MyConfiguration().objectMapper());
 
-    public static final AddTransaction REQUEST = AddTransactionObjectMother.valid();
+    public static final Transaction REQUEST = AddTransactionObjectMother.valid();
 
     @Test
     public void delegate_the_call_to_the_service() {

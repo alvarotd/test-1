@@ -1,17 +1,13 @@
 package com.n26.transactions.statistics.infrastructure.test;
 
-import com.n26.transactions.TransactionService;
+import com.n26.transactions.domain.TransactionService;
 import com.n26.transactions.statistics.domain.Statistics;
 import com.n26.transactions.statistics.infrastructure.delivery.StatisticsController;
-import kotlin.Pair;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.n26.transactions.statistics.domain.Statistics.Companion;
 import static org.assertj.core.api.Assertions.assertThat;

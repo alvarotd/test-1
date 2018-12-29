@@ -3,7 +3,7 @@ package com.n26;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import com.n26.transactions.add.domain.AddTransaction;
+import com.n26.transactions.domain.Transaction;
 import com.n26.transactions.add.infrastructure.AddTransactionSerializer;
 import com.n26.transactions.add.infrastructure.StatisticsDeserializer;
 import com.n26.transactions.add.infrastructure.StatisticsSerializer;
@@ -17,7 +17,7 @@ public class MyConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         SimpleModule transactionModule = new SimpleModule();
-        transactionModule.addSerializer(AddTransaction.class, new AddTransactionSerializer());
+        transactionModule.addSerializer(Transaction.class, new AddTransactionSerializer());
 
         SimpleModule statisticsModule = new SimpleModule();
         statisticsModule.addSerializer(Statistics.class, new StatisticsSerializer());

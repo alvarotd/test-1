@@ -1,6 +1,5 @@
-package com.n26.transactions
+package com.n26.transactions.domain
 
-import com.n26.transactions.add.domain.AddTransaction
 import com.n26.transactions.statistics.domain.Statistics
 import org.springframework.stereotype.Repository
 import java.math.BigDecimal
@@ -9,9 +8,9 @@ import java.math.RoundingMode
 
 @Repository
 open class TransactionRepository {
-    private val values: MutableList<AddTransaction> = mutableListOf()
+    private val values: MutableList<Transaction> = mutableListOf()
 
-    open fun addTransaction(request: AddTransaction) {
+    open fun addTransaction(request: Transaction) {
         this.values.add(request)
     }
 
@@ -25,9 +24,9 @@ open class TransactionRepository {
                 "min" to minOrDefault(validValues, BigDecimal.ZERO))
     }
 
-    private fun sum(values: List<AddTransaction>): String = values.fold(BigDecimal.ZERO) { acc, it -> acc.add(it.amount) }.formatted()
+    private fun sum(values: List<Transaction>): String = values.fold(BigDecimal.ZERO) { acc, it -> acc.add(it.amount) }.formatted()
 
-    private fun maxOrDefault(values: List<AddTransaction>, defaultValue: BigDecimal): String {
+    private fun maxOrDefault(values: List<Transaction>, defaultValue: BigDecimal): String {
         return if (values.isEmpty()) {
             defaultValue
         } else {
@@ -41,7 +40,7 @@ open class TransactionRepository {
         }.formatted()
     }
 
-    private fun minOrDefault(values: List<AddTransaction>, defaultValue: BigDecimal): String {
+    private fun minOrDefault(values: List<Transaction>, defaultValue: BigDecimal): String {
         return if (values.isEmpty()) {
             defaultValue
         } else {
@@ -55,7 +54,7 @@ open class TransactionRepository {
         }.formatted()
     }
 
-    private fun avgOrDefault(values: List<AddTransaction>, defaultValue: BigDecimal): String {
+    private fun avgOrDefault(values: List<Transaction>, defaultValue: BigDecimal): String {
         val quantity = BigDecimal(values.size)
         val result = if (quantity == BigDecimal.ZERO) {
             defaultValue

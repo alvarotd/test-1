@@ -1,15 +1,16 @@
 package com.n26.transactions.add.infrastructure;
 
 import arrow.core.Either;
-import com.n26.transactions.TransactionRepository;
-import com.n26.transactions.TransactionService;
-import com.n26.transactions.add.domain.AddTransaction;
-import com.n26.transactions.add.infrastructure.TransactionError.TransactionDateInTheFuture;
-import com.n26.transactions.add.infrastructure.TransactionError.TransactionIsTooOld;
+import com.n26.transactions.add.infrastructure.delivery.TransactionError;
+import com.n26.transactions.add.infrastructure.delivery.TransactionSuccess;
+import com.n26.transactions.domain.TransactionRepository;
+import com.n26.transactions.domain.TransactionService;
+import com.n26.transactions.domain.Transaction;
+import com.n26.transactions.add.infrastructure.delivery.TransactionError.TransactionDateInTheFuture;
+import com.n26.transactions.add.infrastructure.delivery.TransactionError.TransactionIsTooOld;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import static com.n26.transactions.add.infrastructure.AddTransactionObjectMother.*;
@@ -29,7 +30,7 @@ public class TransactionServiceTest {
 
     @Test
     public void a_valid_transaction() {
-        final AddTransaction request = valid();
+        final Transaction request = valid();
 
         final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(request);
 

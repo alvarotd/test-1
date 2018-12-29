@@ -1,29 +1,27 @@
-package com.n26.transactions.add.domain
+package com.n26.transactions.add.infrastructure.delivery.io
 
 import arrow.core.Either
-import arrow.core.Option
 import arrow.core.flatMap
-import arrow.core.toOption
+import com.n26.transactions.domain.Transaction
 import com.n26.transactions.add.infrastructure.DateUtils
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import java.math.BigDecimal
 import java.time.ZonedDateTime
-import java.util.*
 
-data class AddTransaction(val amount: BigDecimal, val timestamp: ZonedDateTime) {
-    fun expired(): Boolean {
-        return ZonedDateTime.now().isAfter(timestamp.plusMinutes(1))
+data class AddTransactionRequest(val amount: String, val timestamp: String) {
+    fun toDomain(): Either<ResponseEntity<*>, Transaction> {
+
+        val (timestamp, amount) = validate()
+
+        return timestamp.flatMap { timestampV ->
+            amount.map { amountV ->
+                Transaction(amountV, timestampV)
+            }
+        }
     }
 
-    fun isInTheFuture(): Boolean {
-        return ZonedDateTime.now().isBefore(timestamp)
-    }
-}
-
-data class AddTransactionX(val amount: String, val timestamp: String) {
-    fun toDomain(): Either<ResponseEntity<*>, AddTransaction> {
-
+    private fun validate(): Pair<Either<ResponseEntity<Void>, ZonedDateTime>, Either<ResponseEntity<Void>, BigDecimal>> {
         val timestamp = try {
             Either.right(DateUtils.parseDate(this.timestamp))
         } catch (e: Exception) {
@@ -35,12 +33,6 @@ data class AddTransactionX(val amount: String, val timestamp: String) {
         } catch (e: Exception) {
             Either.left(ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>())
         }
-
-        return timestamp.flatMap {timestampV->
-            amount.map { amountV->
-                AddTransaction(amountV, timestampV)
-            }
-        }
+        return Pair(timestamp, amount)
     }
 }
-
