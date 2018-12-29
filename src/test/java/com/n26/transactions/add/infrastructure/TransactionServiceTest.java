@@ -22,7 +22,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void a_valid_transaction(){
+    public void a_valid_transaction() {
 
         final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(valid());
 
@@ -30,7 +30,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void a_valid_transaction_almost_expired(){
+    public void a_valid_transaction_almost_expired() {
 
         final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(aged(LocalDateTime.now().minusSeconds(59)));
 
@@ -38,14 +38,15 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void a_transaction_too_old(){
+    public void a_transaction_too_old() {
 
         final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(tooOld());
 
         assertThat(result).isEqualTo(Either.Companion.left(TransactionIsTooOld.INSTANCE));
     }
+
     @Test
-    public void a_transaction_in_the_future(){
+    public void a_transaction_in_the_future() {
 
         final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(inTheFuture());
 
