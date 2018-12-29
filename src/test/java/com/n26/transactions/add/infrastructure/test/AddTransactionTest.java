@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class AddTransactionTest {
 
         final Response response = POST(baseUrl("/transactions"), requestBody);
 
-        assertThat(response.code()).isEqualTo(201);
+        assertThat(response.code()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.body().string()).isEqualTo("");
     }
 
@@ -61,7 +62,7 @@ public class AddTransactionTest {
 
         final Response response = POST(baseUrl("/transactions"), requestBody);
 
-        assertThat(response.code()).isEqualTo(422);
+        assertThat(response.code()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 
     private Response POST(String url, RequestBody requestBody) throws IOException {

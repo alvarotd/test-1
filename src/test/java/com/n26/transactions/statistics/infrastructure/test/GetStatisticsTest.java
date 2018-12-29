@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class GetStatisticsTest {
 
         final Response response = GET(baseUrl("/statistics"));
 
-        assertThat(response.code()).isEqualTo(200);
+        assertThat(response.code()).isEqualTo(HttpStatus.OK.value());
         assertThat(parse(response)).isEqualTo(StatisticsObjectMother.allZeroes());
     }
 

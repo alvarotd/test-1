@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class DeleteTransactionTest {
 
         final Response response = DELETE(baseUrl("/transactions"));
 
-        assertThat(response.code()).isEqualTo(204);
+        assertThat(response.code()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     private Response DELETE(String url) throws IOException {
