@@ -71,7 +71,7 @@ Right now, the work is here: https://github.com/alvarogarcia7/statistics-concurr
 
 ### Spring
 
-These days I prefer using micronaut (https://micronaut.io) rather than Spring. Micronaut is much faster at runtime (800 ms to start the server), and provides compile-time dependency checking (fewer runtime problems of 'cannot find this class').
+These days I prefer using micronaut (http://micronaut.io) rather than Spring. Micronaut is much faster at runtime (800 ms to start the server), and provides compile-time dependency checking (fewer runtime problems of 'cannot find this class').
 
 ## What I like
 
