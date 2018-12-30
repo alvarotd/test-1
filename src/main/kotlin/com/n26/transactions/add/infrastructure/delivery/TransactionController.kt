@@ -45,16 +45,6 @@ class TransactionController(private val service: TransactionService, private val
         }
     }
 
-//    @ExceptionHandler(HttpMessageNotReadableException::class)
-//    fun cannotParseMessage(e: Exception): ResponseEntity<*> {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build<Void>()
-//    }
-//
-//    @ExceptionHandler(IllegalArgumentException::class)
-//    fun cannotParseAField(e: Exception): ResponseEntity<*> {
-//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build<Void>()
-//    }
-
     @DeleteMapping()
     fun deleteAllTransactions(): ResponseEntity<*> {
         service.deleteAllTransactions()
