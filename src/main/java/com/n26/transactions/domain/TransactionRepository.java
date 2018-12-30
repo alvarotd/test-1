@@ -9,33 +9,40 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.math.BigDecimal.ZERO;
+
 @Repository
 public class TransactionRepository {
-    private List<Transaction> values = new ArrayList<>();
+    private final List<Transaction> values = Collections.synchronizedList(new ArrayList<>());
 
     public void addTransaction(Transaction request) {
-        this.values.add(request);
+
+        synchronized (values) {
+            this.values.add(request);
+        }
     }
 
     public Statistics statisticsOfLast60Seconds() {
-        final List<Transaction> validValues = values.stream().filter(it -> !it.expired()).collect(Collectors.toList());
-        final int size = validValues.size();
-        int count = size;
-        return Statistics.Companion.of(count,
-                pair("sum", sum(validValues, BigDecimal.ZERO)),
-                pair("avg", avgOrDefault(validValues, BigDecimal.ZERO)),
-                pair("max", maxOrDefault(validValues, BigDecimal.ZERO)),
-                pair("min", minOrDefault(validValues, BigDecimal.ZERO)));
+        final List<Transaction> validValues;
+        synchronized (values) {
+            validValues = values.stream().filter(it -> !it.expired()).collect(Collectors.toList());
+        }
+        return Statistics.Companion.of(validValues.size(),
+                pair("sum", sumOrDefault(validValues, ZERO)),
+                pair("avg", avgOrDefault(validValues, ZERO)),
+                pair("max", maxOrDefault(validValues, ZERO)),
+                pair("min", minOrDefault(validValues, ZERO)));
     }
 
-    private kotlin.Pair<String, String> pair(String a, String b) {
+    private Pair<String, String> pair(String a, String b) {
         return new Pair<>(a, b);
     }
 
-    private String sum(List<Transaction> values, BigDecimal defaultValue) {
+    private String sumOrDefault(List<Transaction> values, BigDecimal defaultValue) {
         return formatted(sumAsBigDecimal(values, defaultValue));
     }
 
@@ -92,6 +99,8 @@ public class TransactionRepository {
     }
 
     public void deleteAllTransactions() {
-        this.values.clear();
+        synchronized (values) {
+            this.values.clear();
+        }
     }
 }
