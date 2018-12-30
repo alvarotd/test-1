@@ -1,5 +1,9 @@
 # Notes to the Coding Test
 
+I'd very much like to receive all the feedback you have on my implementation, especially in the areas of concurrency, performance, design. Thanks in advance.
+
+I hope you enjoy reviewing this test as much as I enjoyed solving it.
+
 ## Implementation notes
 
   - I've followed a 'make it work, then make it concurrent' approach, using some principles described in the Java Concurrency in Practice (JCIP) book.
@@ -17,6 +21,30 @@
 There is a repo for the development: https://github.com/alvarotd/test-1
 
 There is another repo for the concurrency work: https://github.com/alvarogarcia7/statistics-concurrency-test
+
+## Performance
+
+The class `Snapshot` has all the magic for trying to make the code as O(1) as possible.
+
+My take on it has been to always keep a snapshot of the results:
+
+  - When adding, modifying the snapshot
+  - When data expires (after one minute), modifying the snapshot. This expiring is done via a scheduler, to make it as light as possible, not looping through the elements.
+
+Some concerns:
+
+  - I've kept the maximum of the valid values seen, not of the all of them (i.e., all seen) values.
+      + Imagine at 09:00, a transaction of 10.00
+      + Imagine at 09:01, a transaction of 1.00
+      + At 09:01, we query the statistics:
+         -  Following the valid-transactions strategy, the max should be '1'. Implemented in revision 405afc727be33e91d37df87a88a0703aa20576e4. This follows the O(1) performance requirement
+         - Following the all-transactions strategy, the max should be '10'. Implemented in revision f0f685f69e8dd92c34a275867dadf7056c11cb94. This does not follow the O(1) performance requirement
+      + This test case is not covered by the tests, so I was unsure of what to do. I would normally ask my Product Owner, but this being a Christmas Sunday, so close to the deadline I cannot expect a response on time.
+
+  - To keep the maximum and minimum elements, I've used a `PriorityQueue`, which guarantees O(n log n) for insertion, removal (being n the number of present elements). Also guarantees O(1) for accessing (peek).
+  - I haven't found provides record of all past elements (as they all will expire), that provides O(1) for insertion, removal, query for the given scenario.
+
+According to my understanding, you cannot guarantee O(1) in time+memory performance, while returning 'specifying single highest/lowest transaction value in the last 60 seconds' In this case, I have decided to break the O(1) performance requirement, to make it correct according to the requirements.
 
 
 ## What I would do different
