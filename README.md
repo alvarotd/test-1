@@ -41,10 +41,12 @@ Some concerns:
          - Following the all-transactions strategy, the max should be '10'. Implemented in revision [f0f685](https://github.com/alvarotd/test-1/commit/f0f685f69e8dd92c34a275867dadf7056c11cb94). This follows the O(1) performance requirement
       + This test case is not covered by the tests (meaning both implementations satisfy the tests), so I was unsure of what to do. I would normally ask my Product Owner, but this being a Christmas Sunday, so close to the deadline I cannot expect a response on time.
 
-  - To keep the maximum and minimum elements, I've used a `PriorityQueue`, which guarantees O(n log n) for insertion, removal (being n the number of present elements). Also guarantees O(1) for accessing (peek).
-  - I haven't found provides record of all past elements (as they all will expire), that provides O(1) for insertion, removal, query for the given scenario.
+
 
 According to my understanding, you cannot guarantee O(1) in time+memory performance, while returning 'specifying single highest/lowest transaction value in the last 60 seconds' In this case, I have decided to break the O(1) performance requirement, to make it correct according to the requirements.
+
+  - To keep the maximum and minimum elements, I've used a `PriorityQueue`, which guarantees O(n log n) for insertion, removal (being n the number of present elements). Also guarantees O(1) for accessing (peek).
+  - I haven't found a data structure that provides record of all past elements (as they all will expire), that provides O(1) for insertion, removal, query for the given scenario.
 
 
 ## What I would do different
