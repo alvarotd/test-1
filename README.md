@@ -67,6 +67,8 @@ The responsibility of formatting the statistics is in `Snapshot`. It should not 
 
 I'd integrate the jcstress/concurrency tests into the same project. Right now, they have different lifecycles and purposes, so it's easier to have them as two different projects.
 
+Right now, the work is here: https://github.com/alvarogarcia7/statistics-concurrency-test
+
 ### Spring
 
 These days I prefer using micronaut (https://micronaut.io) rather than Spring. Micronaut is much faster at runtime (800 ms to start the server), and provides compile-time dependency checking (fewer runtime problems of 'cannot find this class').
