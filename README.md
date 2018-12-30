@@ -37,8 +37,8 @@ Some concerns:
       + Imagine at 09:00, a transaction of 10.00
       + Imagine at 09:01, a transaction of 1.00
       + At 09:01, we query the statistics:
-         -  Following the valid-transactions strategy, the max should be '1'. Implemented in revision 405afc727be33e91d37df87a88a0703aa20576e4. This follows the O(1) performance requirement
-         - Following the all-transactions strategy, the max should be '10'. Implemented in revision f0f685f69e8dd92c34a275867dadf7056c11cb94. This does not follow the O(1) performance requirement
+         -  Following the valid-transactions strategy, the max should be '1'. Implemented in revision [405afc](https://github.com/alvarotd/test-1/commit/405afc727be33e91d37df87a88a0703aa20576e4). This follows the O(1) performance requirement
+         - Following the all-transactions strategy, the max should be '10'. Implemented in revision [f0f685](https://github.com/alvarotd/test-1/commit/f0f685f69e8dd92c34a275867dadf7056c11cb94). This does not follow the O(1) performance requirement
       + This test case is not covered by the tests, so I was unsure of what to do. I would normally ask my Product Owner, but this being a Christmas Sunday, so close to the deadline I cannot expect a response on time.
 
   - To keep the maximum and minimum elements, I've used a `PriorityQueue`, which guarantees O(n log n) for insertion, removal (being n the number of present elements). Also guarantees O(1) for accessing (peek).
@@ -51,7 +51,7 @@ According to my understanding, you cannot guarantee O(1) in time+memory performa
 
 ### TransactionController
 
-The code is not as clean as I'd like it to be. The reason is that the controller cannot have `Exception Handlers` (Spring REST), because they are not mounted when doing `mockMVC`. The requirements specify you cannot change the `it` folder, therefore, cannot change it to `standaloneMVC` or similar. (I've left the exception handler code in another revision: bfd58484093a549b5d1bffae6619374444b8e308)
+The code is not as clean as I'd like it to be. The reason is that the controller cannot have `Exception Handlers` (Spring REST), because they are not mounted when doing `mockMVC`. The requirements specify you cannot change the `it` folder, therefore, cannot change it to `standaloneMVC` or similar. (I've left the exception handler code in another revision: [bfd58](https://github.com/alvarotd/test-1/commit/bfd58484093a549b5d1bffae6619374444b8e308))
 
 I'd prefer using a `@Valid` annotation to let Spring handle the validation of the object and receive a valid DTO object.
 
