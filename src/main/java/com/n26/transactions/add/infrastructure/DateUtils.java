@@ -25,4 +25,9 @@ public class DateUtils {
     private static DateTimeFormatter getFormatter() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX").withZone(ZoneId.of("UTC"));
     }
+
+    @NotNull
+    public static ZonedDateTime now() {
+        return ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+    }
 }

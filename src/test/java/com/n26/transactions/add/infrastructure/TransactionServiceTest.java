@@ -41,7 +41,7 @@ public class TransactionServiceTest {
     @Test
     public void a_valid_transaction_almost_expired() {
 
-        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(aged(ZonedDateTime.now().minusSeconds(59)));
+        final Either<TransactionError, TransactionSuccess> result = transactionService.addTransaction(aged(DateUtils.now().minusSeconds(59)));
 
         assertThat(result.isRight()).isTrue();
     }

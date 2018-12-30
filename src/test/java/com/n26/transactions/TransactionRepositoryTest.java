@@ -1,6 +1,7 @@
 package com.n26.transactions;
 
 import arrow.core.Option;
+import com.n26.transactions.add.infrastructure.DateUtils;
 import com.n26.transactions.domain.Transaction;
 import com.n26.transactions.domain.TransactionRepository;
 import org.jetbrains.annotations.NotNull;
@@ -55,9 +56,9 @@ public class TransactionRepositoryTest {
     @Test
     public void averages_the_transactions_using_correct_division() {
 
-        transactionRepository.addTransaction(new Transaction(new BigDecimal("2"), ZonedDateTime.now()));
-        transactionRepository.addTransaction(new Transaction(new BigDecimal("0"), ZonedDateTime.now()));
-        transactionRepository.addTransaction(new Transaction(new BigDecimal("0"), ZonedDateTime.now()));
+        transactionRepository.addTransaction(new Transaction(new BigDecimal("2"), DateUtils.now()));
+        transactionRepository.addTransaction(new Transaction(new BigDecimal("0"), DateUtils.now()));
+        transactionRepository.addTransaction(new Transaction(new BigDecimal("0"), DateUtils.now()));
 
         assertThat(get("avg")).isEqualTo(value("0.67"));
     }
@@ -90,7 +91,7 @@ public class TransactionRepositoryTest {
     public void max_the_transactions() {
 
         transactionRepository.addTransaction(valid());
-        transactionRepository.addTransaction(new Transaction(new BigDecimal("13"), ZonedDateTime.now()));
+        transactionRepository.addTransaction(new Transaction(new BigDecimal("13"), DateUtils.now()));
 
         assertThat(get("max")).isEqualTo(value("13.00"));
     }
@@ -99,7 +100,7 @@ public class TransactionRepositoryTest {
     public void min_the_transactions() {
 
         transactionRepository.addTransaction(valid());
-        transactionRepository.addTransaction(new Transaction(new BigDecimal("13"), ZonedDateTime.now()));
+        transactionRepository.addTransaction(new Transaction(new BigDecimal("13"), DateUtils.now()));
 
         assertThat(get("min")).isEqualTo(value("12.33"));
     }
@@ -114,11 +115,5 @@ public class TransactionRepositoryTest {
         return Option.Companion.just(s);
     }
 
-    //Pending:
-    // O(1) for adding
-    // O(1) for fetching
-    // limit for last 60 seconds
-    // correct behaviour for all
-    // check rounding
 
 }
